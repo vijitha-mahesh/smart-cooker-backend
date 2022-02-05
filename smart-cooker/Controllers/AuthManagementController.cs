@@ -105,6 +105,13 @@ namespace smartCooker.Controllers
 
                 var jwtToken  =GenerateJwtToken(existingUser);
 
+                //create cookies
+
+                Response.Cookies.Append(key:"jwt",value: jwtToken, new Microsoft.AspNetCore.Http.CookieOptions
+                {
+                    HttpOnly = true
+                });
+
                 return Ok(new RegistrationResponse() {
                     Success = true,
                     Token = jwtToken
@@ -118,6 +125,18 @@ namespace smartCooker.Controllers
                     Success = false
             });
         }
+
+        [HttpPost("logout")]
+        public IActionResult Logout()
+        {
+            Response.Cookies.Delete("jwt");
+
+            return Ok(new
+            {
+                message = "success"
+            });
+        }
+
 
         private string GenerateJwtToken(IdentityUser user)
         {
