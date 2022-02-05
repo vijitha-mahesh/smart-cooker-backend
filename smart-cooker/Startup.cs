@@ -23,6 +23,7 @@ namespace smartCooker
 {
     public class Startup
     {
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -39,6 +40,14 @@ namespace smartCooker
             //    options.UseSqlite(
             //        Configuration.GetConnectionString("DefaultConnection")
             //    ));
+
+
+            //services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            //{
+            //    builder.WithOrigins("http://localhost:3000/", "https://smartcooker.conveyor.cloud/")
+            //           .AllowAnyMethod()
+            //           .AllowAnyHeader();
+            //}));
 
 
             services.AddDbContext<ApiDbContext>(options =>
@@ -82,6 +91,13 @@ namespace smartCooker
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "smartCooker v1"));
             }
+
+            // global cors policy
+            app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true) // allow any origin
+                .AllowCredentials()); // allow credentials
 
             app.UseHttpsRedirection();
 
