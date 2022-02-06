@@ -109,13 +109,21 @@ namespace smartCooker.Controllers
 
                 Response.Cookies.Append(key:"jwt",value: jwtToken, new Microsoft.AspNetCore.Http.CookieOptions
                 {
-                    HttpOnly = true
+                    HttpOnly = true,
+                    
                 });
 
-                return Ok(new RegistrationResponse() {
+                return Ok(new RegistrationResponse()
+                {
                     Success = true,
                     Token = jwtToken
                 });
+                //return Ok(new
+                //{
+                //    message = "success"
+                //});
+
+
             }
 
             return BadRequest(new RegistrationResponse(){
