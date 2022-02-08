@@ -12,7 +12,7 @@ using smartCooker.Data;
 namespace smartCooker.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    [Migration("20220208073146_attempt001")]
+    [Migration("20220208155639_attempt001")]
     partial class attempt001
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -174,6 +174,9 @@ namespace smartCooker.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Url")
                         .HasColumnType("nvarchar(max)");
