@@ -18,6 +18,7 @@ using smartCooker.Configuration;
 using smartCooker.Data;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Identity;
+using smartCooker.Models;
 
 namespace smartCooker
 {
@@ -72,8 +73,12 @@ namespace smartCooker
                 };
             });
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                        .AddEntityFrameworkStores<ApiDbContext>();
+            //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            //            .AddEntityFrameworkStores<ApiDbContext>();
+
+            services.AddDefaultIdentity<UserModel>(options => options.SignIn.RequireConfirmedAccount = true)
+        .AddEntityFrameworkStores<ApiDbContext>();
+
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

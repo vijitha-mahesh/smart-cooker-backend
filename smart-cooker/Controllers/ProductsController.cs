@@ -73,18 +73,18 @@ namespace smartCooker.Controllers
         //    return NoContent();
         //}
 
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> DeleteItem(int id)
-        //{
-        //    var existItem = await _context.Items.FirstOrDefaultAsync(x => x.Id == id);
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteProduct(int id)
+        {
+            var existItem = await _context.Product.FirstOrDefaultAsync(x => x.Id == id);
 
-        //    if (existItem == null)
-        //        return NotFound();
+            if (existItem == null)
+                return NotFound();
 
-        //    _context.Items.Remove(existItem);
-        //    await _context.SaveChangesAsync();
+            _context.Product.Remove(existItem);
+            await _context.SaveChangesAsync();
 
-        //    return Ok(existItem);
-        //}
+            return Ok("deleted");
+        }
     }
 }
