@@ -13,10 +13,10 @@ namespace smartCooker.Controllers
     [ApiController]
     public class UserInformationController : ControllerBase
     {
-        private readonly UserManager<UserModel> _userManager;
+        private readonly UserManager<IdentityUserModel> _userManager;
         private readonly ApiDbContext _context;
 
-        public UserInformationController(UserManager<UserModel> userManager, ApiDbContext context)
+        public UserInformationController(UserManager<IdentityUserModel> userManager, ApiDbContext context)
         {
             _userManager = userManager;
             

@@ -67,3 +67,5 @@ F:\PROJECTS\dot net\smart-cooker\smart-cooker\obj\Debug\net6.0\smartCooker.dll
 F:\PROJECTS\dot net\smart-cooker\smart-cooker\obj\Debug\net6.0\ref\smartCooker.dll
 F:\PROJECTS\dot net\smart-cooker\smart-cooker\obj\Debug\net6.0\smartCooker.pdb
 F:\PROJECTS\dot net\smart-cooker\smart-cooker\obj\Debug\net6.0\smartCooker.genruntimeconfig.cache
+F:\PROJECTS\dot net\smart-cooker\smart-cooker\bin\Debug\net6.0\AutoMapper.dll
+F:\PROJECTS\dot net\smart-cooker\smart-cooker\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll

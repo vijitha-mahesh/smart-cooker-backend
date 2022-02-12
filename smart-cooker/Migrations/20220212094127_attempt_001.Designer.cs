@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using smartCooker.Data;
 
@@ -11,9 +12,10 @@ using smartCooker.Data;
 namespace smartCooker.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    partial class ApiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220212094127_attempt_001")]
+    partial class attempt_001
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,10 +36,6 @@ namespace smartCooker.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -54,8 +52,6 @@ namespace smartCooker.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityRole<int>");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -171,66 +167,6 @@ namespace smartCooker.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("OrderProductOrder", b =>
-                {
-                    b.Property<int>("OrdersId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductOrderId")
-                        .HasColumnType("int");
-
-                    b.HasKey("OrdersId", "ProductOrderId");
-
-                    b.HasIndex("ProductOrderId");
-
-                    b.ToTable("OrderProductOrder");
-                });
-
-            modelBuilder.Entity("OutletProductInOutlet", b =>
-                {
-                    b.Property<int>("OutletId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductInOutletId")
-                        .HasColumnType("int");
-
-                    b.HasKey("OutletId", "ProductInOutletId");
-
-                    b.HasIndex("ProductInOutletId");
-
-                    b.ToTable("OutletProductInOutlet");
-                });
-
-            modelBuilder.Entity("ProductProductInOutlet", b =>
-                {
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductInOutletId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ProductId", "ProductInOutletId");
-
-                    b.HasIndex("ProductInOutletId");
-
-                    b.ToTable("ProductProductInOutlet");
-                });
-
-            modelBuilder.Entity("ProductProductOrder", b =>
-                {
-                    b.Property<int>("ProductOrderId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ProductOrderId", "ProductsId");
-
-                    b.HasIndex("ProductsId");
-
-                    b.ToTable("ProductProductOrder");
-                });
-
             modelBuilder.Entity("smartCooker.Models.IdentityUserModel", b =>
                 {
                     b.Property<int>("Id")
@@ -247,6 +183,7 @@ namespace smartCooker.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Created")
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("Deleted")
@@ -269,6 +206,7 @@ namespace smartCooker.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("LastUpdated")
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("LockoutEnabled")
@@ -296,9 +234,6 @@ namespace smartCooker.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
-
-                    b.Property<string>("ProfilePictureUrl")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -335,6 +270,7 @@ namespace smartCooker.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("Created")
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("Deleted")
@@ -344,22 +280,13 @@ namespace smartCooker.Migrations
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("LastUpdated")
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
-
-                    b.Property<int?>("OutletId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("OutletId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Order");
                 });
@@ -376,6 +303,7 @@ namespace smartCooker.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Created")
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("Deleted")
@@ -385,6 +313,7 @@ namespace smartCooker.Migrations
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("LastUpdated")
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
@@ -404,6 +333,7 @@ namespace smartCooker.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("Created")
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("Deleted")
@@ -416,6 +346,7 @@ namespace smartCooker.Migrations
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("LastUpdated")
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
@@ -460,6 +391,7 @@ namespace smartCooker.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("Created")
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("Deleted")
@@ -469,6 +401,7 @@ namespace smartCooker.Migrations
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("LastUpdated")
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Quentity")
@@ -491,6 +424,7 @@ namespace smartCooker.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Created")
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("Deleted")
@@ -503,6 +437,7 @@ namespace smartCooker.Migrations
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("LastUpdated")
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -512,53 +447,12 @@ namespace smartCooker.Migrations
                     b.ToTable("UserAddress");
                 });
 
-            modelBuilder.Entity("smartCooker.Models.UserWorksInOutlet", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int?>("OutletId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OutletId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserWorksInOutlet");
-                });
-
-            modelBuilder.Entity("smartCooker.Models.ApplicationUserRole", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityRole<int>");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("Deleted")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("LastUpdated")
-                        .HasColumnType("datetime2");
-
-                    b.HasDiscriminator().HasValue("ApplicationUserRole");
-                });
-
             modelBuilder.Entity("smartCooker.Models.UserRole", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUserRole<int>");
 
                     b.Property<DateTime>("Created")
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("Deleted")
@@ -568,17 +462,8 @@ namespace smartCooker.Migrations
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("LastUpdated")
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
-
-                    b.Property<int?>("applicationUserRolesId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("identityUserModelsId")
-                        .HasColumnType("int");
-
-                    b.HasIndex("applicationUserRolesId");
-
-                    b.HasIndex("identityUserModelsId");
 
                     b.HasDiscriminator().HasValue("UserRole");
                 });
@@ -634,141 +519,18 @@ namespace smartCooker.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("OrderProductOrder", b =>
-                {
-                    b.HasOne("smartCooker.Models.Order", null)
-                        .WithMany()
-                        .HasForeignKey("OrdersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("smartCooker.Models.ProductOrder", null)
-                        .WithMany()
-                        .HasForeignKey("ProductOrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("OutletProductInOutlet", b =>
-                {
-                    b.HasOne("smartCooker.Models.Outlet", null)
-                        .WithMany()
-                        .HasForeignKey("OutletId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("smartCooker.Models.ProductInOutlet", null)
-                        .WithMany()
-                        .HasForeignKey("ProductInOutletId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ProductProductInOutlet", b =>
-                {
-                    b.HasOne("smartCooker.Models.Product", null)
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("smartCooker.Models.ProductInOutlet", null)
-                        .WithMany()
-                        .HasForeignKey("ProductInOutletId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ProductProductOrder", b =>
-                {
-                    b.HasOne("smartCooker.Models.ProductOrder", null)
-                        .WithMany()
-                        .HasForeignKey("ProductOrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("smartCooker.Models.Product", null)
-                        .WithMany()
-                        .HasForeignKey("ProductsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("smartCooker.Models.Order", b =>
-                {
-                    b.HasOne("smartCooker.Models.Outlet", "Outlet")
-                        .WithMany("Orders")
-                        .HasForeignKey("OutletId");
-
-                    b.HasOne("smartCooker.Models.IdentityUserModel", "User")
-                        .WithMany("Orders")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Outlet");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("smartCooker.Models.UserAddress", b =>
                 {
                     b.HasOne("smartCooker.Models.IdentityUserModel", "IdentityUserModel")
-                        .WithMany("UserAddress")
+                        .WithMany("Posts")
                         .HasForeignKey("IdentityUserModelId");
 
                     b.Navigation("IdentityUserModel");
                 });
 
-            modelBuilder.Entity("smartCooker.Models.UserWorksInOutlet", b =>
-                {
-                    b.HasOne("smartCooker.Models.Outlet", "Outlet")
-                        .WithMany("userWorksInOutlets")
-                        .HasForeignKey("OutletId");
-
-                    b.HasOne("smartCooker.Models.IdentityUserModel", "User")
-                        .WithMany("userWorksInOutlets")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Outlet");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("smartCooker.Models.UserRole", b =>
-                {
-                    b.HasOne("smartCooker.Models.ApplicationUserRole", "applicationUserRoles")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("applicationUserRolesId");
-
-                    b.HasOne("smartCooker.Models.IdentityUserModel", "identityUserModels")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("identityUserModelsId");
-
-                    b.Navigation("applicationUserRoles");
-
-                    b.Navigation("identityUserModels");
-                });
-
             modelBuilder.Entity("smartCooker.Models.IdentityUserModel", b =>
                 {
-                    b.Navigation("Orders");
-
-                    b.Navigation("UserAddress");
-
-                    b.Navigation("UserRoles");
-
-                    b.Navigation("userWorksInOutlets");
-                });
-
-            modelBuilder.Entity("smartCooker.Models.Outlet", b =>
-                {
-                    b.Navigation("Orders");
-
-                    b.Navigation("userWorksInOutlets");
-                });
-
-            modelBuilder.Entity("smartCooker.Models.ApplicationUserRole", b =>
-                {
-                    b.Navigation("UserRoles");
+                    b.Navigation("Posts");
                 });
 #pragma warning restore 612, 618
         }
