@@ -20,11 +20,11 @@ namespace smartCooker.Controllers
     [ApiController]
     public class AuthManagementController : ControllerBase
     {
-        private readonly UserManager<UserModel> _userManager;
+        private readonly UserManager<IdentityUserModel> _userManager;
         private readonly JwtConfig _jwtConfig;
 
         public AuthManagementController(
-            UserManager<UserModel> userManager,
+            UserManager<IdentityUserModel> userManager,
             IOptionsMonitor<JwtConfig> optionsMonitor)
         {
             _userManager = userManager;
@@ -32,20 +32,12 @@ namespace smartCooker.Controllers
         }
 
 
-
-        [HttpGet]
-        public async Task<IActionResult> GetProducts()
-        {
-            return Ok();
-        }
-
         [HttpPost]
         [Route("Register")]
         public async Task<IActionResult> Register([FromBody] UserRegistrationDto user)
         {
             if (ModelState.IsValid)
             {
-                // We can utilise the model
                 var existingUser = await _userManager.FindByEmailAsync(user.Email);
 
                 if (existingUser != null)
@@ -58,27 +50,36 @@ namespace smartCooker.Controllers
                         Success = false
                     });
                 }
-
-                var newUser = new UserModel() { Email = user.Email, UserName = user.Username };
-                var isCreated = await _userManager.CreateAsync(newUser, user.Password);
-                if (isCreated.Succeeded)
+                try
                 {
-                    var jwtToken = GenerateJwtToken(newUser);
+                    var newUser = new IdentityUserModel() { Email = user.Email, UserName = user.Username, FirstName = user.FirstName, LastName = user.LastName, NIC = user.NIC };
+                  
+                    var isCreated = await _userManager.CreateAsync(newUser, user.Password);
+                    if (isCreated.Succeeded)
+                    {
+                        var jwtToken = GenerateJwtToken(newUser);
 
-                    return Ok(new RegistrationResponse()
+                        return Ok(new RegistrationResponse()
+                        {
+                            Success = true,
+                            Token = jwtToken
+                        });
+                    }
+                    else
                     {
-                        Success = true,
-                        Token = jwtToken
-                    });
+                        return BadRequest(new RegistrationResponse()
+                        {
+                            Errors = isCreated.Errors.Select(x => x.Description).ToList(),
+                            Success = false
+                        });
+                    }
                 }
-                else
+                
+                catch (Exception ex)
                 {
-                    return BadRequest(new RegistrationResponse()
-                    {
-                        Errors = isCreated.Errors.Select(x => x.Description).ToList(),
-                        Success = false
-                    });
+                    return ((IActionResult)ex);
                 }
+                
             }
 
             return BadRequest(new RegistrationResponse()
@@ -137,10 +138,6 @@ namespace smartCooker.Controllers
                     Success = true,
                     Token = jwtToken
                 });
-                //return Ok(new
-                //{
-                //    message = "success"
-                //});
             }
 
             return BadRequest(new RegistrationResponse()
@@ -163,20 +160,18 @@ namespace smartCooker.Controllers
             });
         }
 
-        private string GenerateJwtToken(UserModel user)
+        private string GenerateJwtToken(IdentityUserModel user)
         {
             var jwtTokenHandler = new JwtSecurityTokenHandler();
 
             var key = Encoding.ASCII.GetBytes(_jwtConfig.Secret);
-
-           // var claim =  claims.Add(new Claim("username", loginUser.Username));
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[]
                 {
                     new Claim("ID", user.Id.ToString()),
-                    new Claim("Role",user.Role),
+               //     new Claim("Role",user.Role),
                     new Claim(JwtRegisteredClaimNames.Email, user.Email),
                     new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())

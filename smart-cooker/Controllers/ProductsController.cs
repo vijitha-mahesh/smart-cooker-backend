@@ -28,7 +28,7 @@ namespace smartCooker.Controllers
 
         [HttpPost]
 
-        public async Task<IActionResult> CreateItem(ProductModel data)
+        public async Task<IActionResult> CreateItem(Product data)
         {
             if (ModelState.IsValid)
             {

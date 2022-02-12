@@ -36,23 +36,9 @@ namespace smartCooker
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<JwtConfig>(Configuration.GetSection("JwtConfig"));
-
-            //services.AddDbContext<ApiDbContext>(options =>
-            //    options.UseSqlite(
-            //        Configuration.GetConnectionString("DefaultConnection")
-            //    ));
-
-
-            //services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
-            //{
-            //    builder.WithOrigins("http://localhost:3000/", "https://smartcooker.conveyor.cloud/")
-            //           .AllowAnyMethod()
-            //           .AllowAnyHeader();
-            //}));
-
-
             services.AddDbContext<ApiDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddAutoMapper(typeof(Startup));
 
             services.AddAuthentication(options => {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -73,11 +59,10 @@ namespace smartCooker
                 };
             });
 
-            //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-            //            .AddEntityFrameworkStores<ApiDbContext>();
-
-            services.AddDefaultIdentity<UserModel>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<IdentityUserModel>(options => options.SignIn.RequireConfirmedAccount = true)
         .AddEntityFrameworkStores<ApiDbContext>();
+
+
 
 
             services.AddControllers();
