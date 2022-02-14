@@ -19,6 +19,10 @@ using smartCooker.Data;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Identity;
 using smartCooker.Models;
+using smartCooker.Repositories.IRepository;
+using smartCooker.Repositories.Repository;
+using smartCooker.Services;
+using smartCooker.Services.IServices;
 
 namespace smartCooker
 {
@@ -63,13 +67,17 @@ namespace smartCooker
         .AddEntityFrameworkStores<ApiDbContext>();
 
 
-
-
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "smartCooker", Version = "v1" });
             });
+            
+
+            services.AddScoped<IProductService, ProductService>();
+
+ 
+            services.AddScoped<IProductRepository, ProductRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
