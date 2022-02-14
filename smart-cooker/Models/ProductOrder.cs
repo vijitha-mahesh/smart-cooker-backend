@@ -7,7 +7,7 @@ namespace smartCooker.Models
         public int Id { get; set; }
         public string Quentity { get; set; }
 
-        public IList<Product> Products { get; set; }
-        public IList<Order> Orders { get; set; }
+        public Product Products { get; set; }
+        public Order Orders { get; set; }
     }
 }

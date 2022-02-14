@@ -13,6 +13,7 @@ namespace smartCooker.Models
         public string LastName { get; set; }
         public string ProfilePictureUrl { get; set; }
 
+
         public DateTime Created { get; set; } = DateTime.Now;
 
         public DateTime LastUpdated { get; set; } = DateTime.Now;
