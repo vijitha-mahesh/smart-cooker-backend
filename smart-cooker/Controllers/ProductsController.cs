@@ -44,14 +44,6 @@ namespace smartCooker.Controllers
         [HttpPost]
         public ActionResult CreateItem(CreateProductDTO data)
         {
-            //if (ModelState.IsValid)
-            //{
-
-            //    return Ok("Product Successfully Created");
-            //}
-
-            //return new JsonResult("Something went wrong") { StatusCode = 500 };
-
             try
             {
                 _service.CreateProduct(data);
@@ -64,38 +56,58 @@ namespace smartCooker.Controllers
         }
 
 
-        //[HttpGet("{id}")]
-        //public async Task<IActionResult> GetProduct(int id)
-        //{
-        //    var item = await _context.Product.FirstOrDefaultAsync(x => x.Id == id);
+        [HttpGet("{id}")]
+        public ActionResult GetProduct(int id)
+        {
+            try
+            {
+                var item = _service.GetProductById(id);
+                return Ok(item);
 
-        //    if (item == null)
+            }
+            catch (Exception e)
+            {
+                return NotFound(e.Message);
+            }
+        }
+
+        [Route("quentity")]
+        [HttpPost]
+        public ActionResult getProductQuentityInOutlet(GetProductQuentityInOutletDTO data)
+        {
+            try 
+            {
+                var quentity = _service.getProductQuentityInOutlet(int.Parse(data.ProductId), int.Parse(data.OutletId));
+                return Ok(quentity);
+            }
+            catch(Exception e)
+            {
+                return NotFound(e.Message);
+            }
+        }
+
+
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> UpdateItem(int id, ItemData item)
+        //{
+        //    if (id != item.Id)
+        //        return BadRequest();
+
+        //    var existItem = await _context.Items.FirstOrDefaultAsync(x => x.Id == id);
+
+        //    if (existItem == null)
         //        return NotFound();
 
-        //    return Ok(item);
+        //    existItem.Title = item.Title;
+        //    existItem.Description = item.Description;
+        //    existItem.Done = item.Done;
+
+        //    // Implement the changes on the database level
+        //    await _context.SaveChangesAsync();
+
+        //    return NoContent();
         //}
 
-
-        ////[HttpPut("{id}")]
-        ////public async Task<IActionResult> UpdateItem(int id, ItemData item)
-        ////{
-        ////    if (id != item.Id)
-        ////        return BadRequest();
-
-        ////    var existItem = await _context.Items.FirstOrDefaultAsync(x => x.Id == id);
-
-        ////    if (existItem == null)
-        ////        return NotFound();
-
-        ////    existItem.Title = item.Title;
-        ////    existItem.Description = item.Description;
-        ////    existItem.Done = item.Done;
-
-        ////    // Implement the changes on the database level
-        ////    await _context.SaveChangesAsync();
-
-        ////    return NoContent();
-        ////}
 
         //[HttpDelete("{id}")]
         //public async Task<IActionResult> DeleteProduct(int id)

@@ -43,21 +43,13 @@ namespace smartCooker.Services
             return _mapper.Map<IEnumerable<CustomerProductReadDTO>>(products);
         }
 
-        //////public void AddProduct(CreateProductDTO product)
-        //////{
-        //////        var newProduct = _mapper.Map<Product>(product);
-        //////        _repository.AddProduct(newProduct);
-        //////}
-
         public bool CreateProduct(CreateProductDTO productToCreate)
         {
 
             var Newproduct = _mapper.Map<Product>(productToCreate);
-            // Validation logic
+
             if (!ValidateProduct(Newproduct))
                 return false;
-
-            // Database logic
             try
             {
                 _repository.AddProduct(Newproduct);
@@ -69,6 +61,16 @@ namespace smartCooker.Services
             return true;
         }
 
+       public CustomerProductReadDTO GetProductById(int id)
+        {
+            return _repository.GetProductById(id);
+;        }
+
+
+        public int getProductQuentityInOutlet(int productId, int outletId)
+        {
+            return(_repository.getProductQuentityInOutlet(productId, outletId));
+        }
     }
 
 }
