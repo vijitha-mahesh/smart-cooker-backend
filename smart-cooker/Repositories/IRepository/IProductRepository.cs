@@ -1,4 +1,5 @@
-﻿using smartCooker.Models;
+﻿using smartCooker.DTOs.Products;
+using smartCooker.Models;
 using System.Collections.Generic;
 
 namespace smartCooker.Repositories.IRepository
@@ -7,5 +8,9 @@ namespace smartCooker.Repositories.IRepository
     {
         IEnumerable<Product> CustomerGetAllProducts();
         void AddProduct(Product product);
+
+        CustomerProductReadDTO GetProductById(int id);
+
+        int getProductQuentityInOutlet(int productId, int outletId);
     }
 }
