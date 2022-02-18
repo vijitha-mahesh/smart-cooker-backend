@@ -23,7 +23,7 @@ namespace smartCooker.Services
         }
 
 
-        protected bool ValidateProduct(Product productToValidate)
+        private bool ValidateProduct(Product productToValidate)
         {
             //if (productToValidate.Name.Trim().Length == 0)
             //    _modelState.AddModelError("Name", "Name is required.");

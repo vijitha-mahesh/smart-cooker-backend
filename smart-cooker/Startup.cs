@@ -76,7 +76,6 @@ namespace smartCooker
 
             services.AddScoped<IProductService, ProductService>();
 
- 
             services.AddScoped<IProductRepository, ProductRepository>();
         }
 

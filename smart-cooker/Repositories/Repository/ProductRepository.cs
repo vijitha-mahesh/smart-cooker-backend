@@ -3,6 +3,7 @@ using smartCooker.Data;
 using smartCooker.DTOs.Products;
 using smartCooker.Models;
 using smartCooker.Repositories.IRepository;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -53,18 +54,21 @@ namespace smartCooker.Repositories.Repository
 
        public int getProductQuentityInOutlet(int productId, int outletId)
         {
-
-            var quentity = _context.ProductInOutlet.FirstOrDefault(x => x.Product.Id == productId && x.Outlet.Id == outletId).Quentity;
-
-            if (quentity != null)
+            try
             {
+                var quentity = _context.ProductInOutlet.FirstOrDefault(x => x.Product.Id == productId && x.Outlet.Id == outletId).Quentity;
                 return quentity;
+                
             }
-            else
+            catch(NullReferenceException e)
             {
                 return 0;
             }
-            
+            catch(Exception e)
+            {
+                return 0;
+            }
+
         }
     }
 }

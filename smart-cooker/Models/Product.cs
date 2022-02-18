@@ -2,7 +2,7 @@
 
 namespace smartCooker.Models
 {
-    public class Product:BaseModel
+    public class Product : BaseModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
