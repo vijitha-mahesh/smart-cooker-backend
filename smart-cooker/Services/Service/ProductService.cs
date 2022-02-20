@@ -5,7 +5,7 @@ using smartCooker.Repositories.IRepository;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using smartCooker.Services.IServices;
-using System.Web.Http.ModelBinding;
+
 
 namespace smartCooker.Services
 {
@@ -37,11 +37,13 @@ namespace smartCooker.Services
         }
 
 
-        public IEnumerable<CustomerProductReadDTO> CustomerGetAllProducts()
+        public IEnumerable<CustomerProductReadDTO> CustomerGetAllProducts(int outletId)
         {
-            var products = _repository.CustomerGetAllProducts();
+              var products = _repository.CustomerGetAllProducts(outletId);
+ 
             return _mapper.Map<IEnumerable<CustomerProductReadDTO>>(products);
         }
+
 
         public bool CreateProduct(CreateProductDTO productToCreate)
         {

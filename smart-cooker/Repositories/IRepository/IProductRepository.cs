@@ -6,11 +6,12 @@ namespace smartCooker.Repositories.IRepository
 {
     public interface IProductRepository
     {
-        IEnumerable<Product> CustomerGetAllProducts();
+        IEnumerable<Product> CustomerGetAllProducts(int outletId);
         void AddProduct(Product product);
 
         CustomerProductReadDTO GetProductById(int id);
 
         int getProductQuentityInOutlet(int productId, int outletId);
+
     }
 }

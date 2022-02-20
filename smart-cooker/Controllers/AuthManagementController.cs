@@ -168,26 +168,16 @@ namespace smartCooker.Controllers
 
         private string GenerateJwtToken(IdentityUserModel user)
         {
-           var result = (from R in _context.ApplicationRole
-                                                        join U in _context.UserRole on R.Id equals U.RoleId
-                                                        where U.UserId == user.Id
-                                                        select new UserRoleReadDTO
-                                                        {
-                                                            RoleId = R.Id,
-                                                            RoleName = R.Name
-                                                        });
-
             var jwtTokenHandler = new JwtSecurityTokenHandler();
 
             var key = Encoding.ASCII.GetBytes(_jwtConfig.Secret);
-
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[]
                 {
                     new Claim("ID", user.Id.ToString()),
-                   // new Claim("Role",result.RoleName),
+                    new Claim("Role",user.Role),
                     new Claim(JwtRegisteredClaimNames.Email, user.Email),
                     new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())

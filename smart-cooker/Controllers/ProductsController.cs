@@ -19,28 +19,27 @@ namespace smartCooker.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-       // private readonly ApiDbContext _context;
        private readonly IProductService _service;
 
         public ProductsController(IProductService service)
         {
-            // _context = context;
             _service = service;
         }
+        
 
-        [HttpGet]
-        public ActionResult<IEnumerable<CustomerProductReadDTO>> GetProducts()
+        [HttpGet("productsinoutlet/{outletId}")]
+        public ActionResult<IEnumerable<CustomerProductReadDTO>> GetProducts(int outletId)
         {
             try
             {
-                return Ok(_service.CustomerGetAllProducts());
+                return Ok(_service.CustomerGetAllProducts(outletId));
             }
             catch(Exception e)
             {
                 return BadRequest(e.Message);
             }
         }
-
+ 
         [HttpPost]
         public ActionResult CreateItem(CreateProductDTO data)
         {

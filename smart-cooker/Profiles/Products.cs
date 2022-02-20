@@ -10,6 +10,10 @@ namespace smartCooker.Profiles
         {
             CreateMap<Product, CustomerProductReadDTO >(); 
             CreateMap<CreateProductDTO, Product>();
+
+            CreateMap<ProductInOutlet, Product>()
+                .ForMember(destination => destination.Id,
+                option => option.MapFrom(source => source.Product.Id));
         }
     }
 }
