@@ -34,10 +34,6 @@ namespace smartCooker.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -54,8 +50,6 @@ namespace smartCooker.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityRole<int>");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -137,17 +131,11 @@ namespace smartCooker.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("UserId", "RoleId");
 
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUserRole<int>");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
@@ -238,6 +226,9 @@ namespace smartCooker.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("ProfilePictureUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Role")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecurityStamp")
@@ -495,54 +486,6 @@ namespace smartCooker.Migrations
                     b.ToTable("UserWorksInOutlet");
                 });
 
-            modelBuilder.Entity("smartCooker.Models.ApplicationUserRole", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityRole<int>");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("Deleted")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("LastUpdated")
-                        .HasColumnType("datetime2");
-
-                    b.HasDiscriminator().HasValue("ApplicationUserRole");
-                });
-
-            modelBuilder.Entity("smartCooker.Models.UserRole", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUserRole<int>");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("Deleted")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("LastUpdated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("applicationUserRolesId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("identityUserModelsId")
-                        .HasColumnType("int");
-
-                    b.HasIndex("applicationUserRolesId");
-
-                    b.HasIndex("identityUserModelsId");
-
-                    b.HasDiscriminator().HasValue("UserRole");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<int>", null)
@@ -663,28 +606,11 @@ namespace smartCooker.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("smartCooker.Models.UserRole", b =>
-                {
-                    b.HasOne("smartCooker.Models.ApplicationUserRole", "applicationUserRoles")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("applicationUserRolesId");
-
-                    b.HasOne("smartCooker.Models.IdentityUserModel", "identityUserModels")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("identityUserModelsId");
-
-                    b.Navigation("applicationUserRoles");
-
-                    b.Navigation("identityUserModels");
-                });
-
             modelBuilder.Entity("smartCooker.Models.IdentityUserModel", b =>
                 {
                     b.Navigation("Orders");
 
                     b.Navigation("UserAddress");
-
-                    b.Navigation("UserRoles");
 
                     b.Navigation("userWorksInOutlets");
                 });
@@ -708,11 +634,6 @@ namespace smartCooker.Migrations
                     b.Navigation("ProductInOutlet");
 
                     b.Navigation("ProductOrder");
-                });
-
-            modelBuilder.Entity("smartCooker.Models.ApplicationUserRole", b =>
-                {
-                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }

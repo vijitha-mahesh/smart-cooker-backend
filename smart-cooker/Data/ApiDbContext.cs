@@ -7,8 +7,6 @@ namespace smartCooker.Data
 {
     public class ApiDbContext : IdentityDbContext<IdentityUserModel, IdentityRole<int>, int>
     {
-        public DbSet<ApplicationUserRole> ApplicationRole { get; set; }
-        public DbSet<UserRole> UserRole { get; set; }
         public DbSet<Order> Order { get; set; }
         public DbSet<Outlet> Outlet { get; set; }
         public DbSet<ProductInOutlet> ProductInOutlet { get; set; }

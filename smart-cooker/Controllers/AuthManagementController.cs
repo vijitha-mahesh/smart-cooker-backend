@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using smartCooker.Configuration;
+using smartCooker.Data;
+using smartCooker.DTOs.Users;
 using smartCooker.Models;
 using smartCooker.Models.DTOs.Requests;
 using smartCooker.Models.DTOs.Responses;
@@ -22,13 +24,17 @@ namespace smartCooker.Controllers
     {
         private readonly UserManager<IdentityUserModel> _userManager;
         private readonly JwtConfig _jwtConfig;
+        private readonly ApiDbContext _context;
 
         public AuthManagementController(
             UserManager<IdentityUserModel> userManager,
-            IOptionsMonitor<JwtConfig> optionsMonitor)
+            IOptionsMonitor<JwtConfig> optionsMonitor,
+        ApiDbContext context)
+
         {
             _userManager = userManager;
             _jwtConfig = optionsMonitor.CurrentValue;
+            _context = context;
         }
 
 
@@ -171,7 +177,7 @@ namespace smartCooker.Controllers
                 Subject = new ClaimsIdentity(new[]
                 {
                     new Claim("ID", user.Id.ToString()),
-               //     new Claim("Role",user.Role),
+                    new Claim("Role",user.Role),
                     new Claim(JwtRegisteredClaimNames.Email, user.Email),
                     new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())

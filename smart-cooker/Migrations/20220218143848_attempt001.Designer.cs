@@ -12,8 +12,8 @@ using smartCooker.Data;
 namespace smartCooker.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    [Migration("20220212144955_attempt_003")]
-    partial class attempt_003
+    [Migration("20220218143848_attempt001")]
+    partial class attempt001
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -133,17 +133,11 @@ namespace smartCooker.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("UserId", "RoleId");
 
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUserRole<int>");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
@@ -236,6 +230,9 @@ namespace smartCooker.Migrations
                     b.Property<string>("ProfilePictureUrl")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Role")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -282,10 +279,20 @@ namespace smartCooker.Migrations
                     b.Property<DateTime>("LastUpdated")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("OutletId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("OutletId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Order");
                 });
@@ -369,10 +376,20 @@ namespace smartCooker.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int?>("OutletId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Quentity")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OutletId");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("ProductInOutlet");
                 });
@@ -397,10 +414,20 @@ namespace smartCooker.Migrations
                     b.Property<DateTime>("LastUpdated")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("OrdersId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProductsId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Quentity")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OrdersId");
+
+                    b.HasIndex("ProductsId");
 
                     b.ToTable("ProductOrder");
                 });
@@ -438,23 +465,27 @@ namespace smartCooker.Migrations
                     b.ToTable("UserAddress");
                 });
 
-            modelBuilder.Entity("smartCooker.Models.UserRole", b =>
+            modelBuilder.Entity("smartCooker.Models.UserWorksInOutlet", b =>
                 {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUserRole<int>");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime?>("Deleted")
-                        .HasColumnType("datetime2");
+                    b.Property<int?>("OutletId")
+                        .HasColumnType("int");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("LastUpdated")
-                        .HasColumnType("datetime2");
+                    b.HasKey("Id");
 
-                    b.HasDiscriminator().HasValue("UserRole");
+                    b.HasIndex("OutletId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserWorksInOutlet");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -508,18 +539,103 @@ namespace smartCooker.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("smartCooker.Models.Order", b =>
+                {
+                    b.HasOne("smartCooker.Models.Outlet", "Outlet")
+                        .WithMany("Orders")
+                        .HasForeignKey("OutletId");
+
+                    b.HasOne("smartCooker.Models.IdentityUserModel", "User")
+                        .WithMany("Orders")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Outlet");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("smartCooker.Models.ProductInOutlet", b =>
+                {
+                    b.HasOne("smartCooker.Models.Outlet", "Outlet")
+                        .WithMany("ProductInOutlet")
+                        .HasForeignKey("OutletId");
+
+                    b.HasOne("smartCooker.Models.Product", "Product")
+                        .WithMany("ProductInOutlet")
+                        .HasForeignKey("ProductId");
+
+                    b.Navigation("Outlet");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("smartCooker.Models.ProductOrder", b =>
+                {
+                    b.HasOne("smartCooker.Models.Order", "Orders")
+                        .WithMany("ProductOrder")
+                        .HasForeignKey("OrdersId");
+
+                    b.HasOne("smartCooker.Models.Product", "Products")
+                        .WithMany("ProductOrder")
+                        .HasForeignKey("ProductsId");
+
+                    b.Navigation("Orders");
+
+                    b.Navigation("Products");
+                });
+
             modelBuilder.Entity("smartCooker.Models.UserAddress", b =>
                 {
                     b.HasOne("smartCooker.Models.IdentityUserModel", "IdentityUserModel")
-                        .WithMany("Posts")
+                        .WithMany("UserAddress")
                         .HasForeignKey("IdentityUserModelId");
 
                     b.Navigation("IdentityUserModel");
                 });
 
+            modelBuilder.Entity("smartCooker.Models.UserWorksInOutlet", b =>
+                {
+                    b.HasOne("smartCooker.Models.Outlet", "Outlet")
+                        .WithMany("userWorksInOutlets")
+                        .HasForeignKey("OutletId");
+
+                    b.HasOne("smartCooker.Models.IdentityUserModel", "User")
+                        .WithMany("userWorksInOutlets")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Outlet");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("smartCooker.Models.IdentityUserModel", b =>
                 {
-                    b.Navigation("Posts");
+                    b.Navigation("Orders");
+
+                    b.Navigation("UserAddress");
+
+                    b.Navigation("userWorksInOutlets");
+                });
+
+            modelBuilder.Entity("smartCooker.Models.Order", b =>
+                {
+                    b.Navigation("ProductOrder");
+                });
+
+            modelBuilder.Entity("smartCooker.Models.Outlet", b =>
+                {
+                    b.Navigation("Orders");
+
+                    b.Navigation("ProductInOutlet");
+
+                    b.Navigation("userWorksInOutlets");
+                });
+
+            modelBuilder.Entity("smartCooker.Models.Product", b =>
+                {
+                    b.Navigation("ProductInOutlet");
+
+                    b.Navigation("ProductOrder");
                 });
 #pragma warning restore 612, 618
         }

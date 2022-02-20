@@ -11,7 +11,9 @@ namespace smartCooker.Models
         public string NIC { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string Role { get; set; } = "customer";
         public string ProfilePictureUrl { get; set; }
+
 
 
         public DateTime Created { get; set; } = DateTime.Now;
@@ -26,7 +28,6 @@ namespace smartCooker.Models
         public IList<UserWorksInOutlet> userWorksInOutlets { get; set; }
         public IList<UserAddress> UserAddress { get; set; }
         public IList<Order> Orders { get; set; }
-        public IList<UserRole> UserRoles { get; set; }
 
     }
 }

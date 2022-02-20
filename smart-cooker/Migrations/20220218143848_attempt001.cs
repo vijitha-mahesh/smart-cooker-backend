@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace smartCooker.Migrations
 {
-    public partial class attempt_001 : Migration
+    public partial class attempt001 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -33,6 +33,8 @@ namespace smartCooker.Migrations
                     NIC = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Role = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProfilePictureUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastUpdated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
@@ -55,24 +57,6 @@ namespace smartCooker.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Order",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastUpdated = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    Deleted = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Order", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -112,36 +96,6 @@ namespace smartCooker.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Product", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ProductInOutlet",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Quentity = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProductInOutlet", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ProductOrder",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Quentity = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastUpdated = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    Deleted = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProductOrder", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -211,12 +165,7 @@ namespace smartCooker.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    RoleId = table.Column<int>(type: "int", nullable: false),
-                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastUpdated = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: true),
-                    Deleted = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    RoleId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -278,6 +227,114 @@ namespace smartCooker.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Order",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<int>(type: "int", nullable: true),
+                    OutletId = table.Column<int>(type: "int", nullable: true),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastUpdated = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    Deleted = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Order", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Order_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Order_Outlet_OutletId",
+                        column: x => x.OutletId,
+                        principalTable: "Outlet",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserWorksInOutlet",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: true),
+                    OutletId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserWorksInOutlet", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserWorksInOutlet_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_UserWorksInOutlet_Outlet_OutletId",
+                        column: x => x.OutletId,
+                        principalTable: "Outlet",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductInOutlet",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Quentity = table.Column<int>(type: "int", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: true),
+                    OutletId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductInOutlet", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProductInOutlet_Outlet_OutletId",
+                        column: x => x.OutletId,
+                        principalTable: "Outlet",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_ProductInOutlet_Product_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Product",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductOrder",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Quentity = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProductsId = table.Column<int>(type: "int", nullable: true),
+                    OrdersId = table.Column<int>(type: "int", nullable: true),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastUpdated = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    Deleted = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductOrder", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProductOrder_Order_OrdersId",
+                        column: x => x.OrdersId,
+                        principalTable: "Order",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_ProductOrder_Product_ProductsId",
+                        column: x => x.ProductsId,
+                        principalTable: "Product",
+                        principalColumn: "Id");
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -318,9 +375,49 @@ namespace smartCooker.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Order_OutletId",
+                table: "Order",
+                column: "OutletId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Order_UserId",
+                table: "Order",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductInOutlet_OutletId",
+                table: "ProductInOutlet",
+                column: "OutletId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductInOutlet_ProductId",
+                table: "ProductInOutlet",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductOrder_OrdersId",
+                table: "ProductOrder",
+                column: "OrdersId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductOrder_ProductsId",
+                table: "ProductOrder",
+                column: "ProductsId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserAddress_IdentityUserModelId",
                 table: "UserAddress",
                 column: "IdentityUserModelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserWorksInOutlet_OutletId",
+                table: "UserWorksInOutlet",
+                column: "OutletId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserWorksInOutlet_UserId",
+                table: "UserWorksInOutlet",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -341,15 +438,6 @@ namespace smartCooker.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Order");
-
-            migrationBuilder.DropTable(
-                name: "Outlet");
-
-            migrationBuilder.DropTable(
-                name: "Product");
-
-            migrationBuilder.DropTable(
                 name: "ProductInOutlet");
 
             migrationBuilder.DropTable(
@@ -359,10 +447,22 @@ namespace smartCooker.Migrations
                 name: "UserAddress");
 
             migrationBuilder.DropTable(
+                name: "UserWorksInOutlet");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "Order");
+
+            migrationBuilder.DropTable(
+                name: "Product");
+
+            migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Outlet");
         }
     }
 }

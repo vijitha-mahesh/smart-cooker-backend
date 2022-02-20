@@ -25,7 +25,7 @@ namespace smartCooker.Controllers
         }
         // GET api/<UserInformationController>/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetProduct(int id)
+        public async Task<IActionResult> getUserById(int id)
         {
             var item = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
 

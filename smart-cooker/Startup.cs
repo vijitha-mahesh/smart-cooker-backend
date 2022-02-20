@@ -23,6 +23,8 @@ using smartCooker.Repositories.IRepository;
 using smartCooker.Repositories.Repository;
 using smartCooker.Services;
 using smartCooker.Services.IServices;
+using smartCooker.Services.IService;
+using smartCooker.Services.Service;
 
 namespace smartCooker
 {
@@ -66,18 +68,22 @@ namespace smartCooker
             services.AddDefaultIdentity<IdentityUserModel>(options => options.SignIn.RequireConfirmedAccount = true)
         .AddEntityFrameworkStores<ApiDbContext>();
 
+            //services.AddIdentity<IdentityUserModel, ApplicationUserRole>()
+            // .AddEntityFrameworkStores<ApiDbContext>()
+            // .AddDefaultTokenProviders();
 
             services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
+            services.AddSwaggerGen(c =>{
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "smartCooker", Version = "v1" });
             });
             
 
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IOutletService, OutletService>();
 
- 
+
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IOutletRepository, OutletRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

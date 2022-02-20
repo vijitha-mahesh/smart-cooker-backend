@@ -5,7 +5,7 @@ using smartCooker.Repositories.IRepository;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using smartCooker.Services.IServices;
-using System.Web.Http.ModelBinding;
+
 
 namespace smartCooker.Services
 {
@@ -23,7 +23,7 @@ namespace smartCooker.Services
         }
 
 
-        protected bool ValidateProduct(Product productToValidate)
+        private bool ValidateProduct(Product productToValidate)
         {
             //if (productToValidate.Name.Trim().Length == 0)
             //    _modelState.AddModelError("Name", "Name is required.");
@@ -37,11 +37,13 @@ namespace smartCooker.Services
         }
 
 
-        public IEnumerable<CustomerProductReadDTO> CustomerGetAllProducts()
+        public IEnumerable<CustomerProductReadDTO> CustomerGetAllProducts(int outletId)
         {
-            var products = _repository.CustomerGetAllProducts();
+              var products = _repository.CustomerGetAllProducts(outletId);
+ 
             return _mapper.Map<IEnumerable<CustomerProductReadDTO>>(products);
         }
+
 
         public bool CreateProduct(CreateProductDTO productToCreate)
         {
