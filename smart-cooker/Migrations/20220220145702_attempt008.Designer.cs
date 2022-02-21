@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using smartCooker.Data;
 
@@ -11,9 +12,10 @@ using smartCooker.Data;
 namespace smartCooker.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    partial class ApiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220220145702_attempt008")]
+    partial class attempt008
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -374,18 +376,6 @@ namespace smartCooker.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("Deleted")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("LastUpdated")
-                        .HasColumnType("datetime2");
-
                     b.Property<int?>("OutletId")
                         .HasColumnType("int");
 
@@ -427,25 +417,17 @@ namespace smartCooker.Migrations
                     b.Property<int?>("OrdersId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ProductId")
+                    b.Property<int?>("ProductsId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ProductInOutletId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Product_Order_Qty")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quentity")
-                        .HasColumnType("int");
+                    b.Property<string>("Quentity")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("OrdersId");
 
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("ProductInOutletId");
+                    b.HasIndex("ProductsId");
 
                     b.ToTable("ProductOrder");
                 });
@@ -593,17 +575,13 @@ namespace smartCooker.Migrations
                         .WithMany("ProductOrder")
                         .HasForeignKey("OrdersId");
 
-                    b.HasOne("smartCooker.Models.Product", null)
+                    b.HasOne("smartCooker.Models.Product", "Products")
                         .WithMany("ProductOrder")
-                        .HasForeignKey("ProductId");
-
-                    b.HasOne("smartCooker.Models.ProductInOutlet", "ProductInOutlet")
-                        .WithMany()
-                        .HasForeignKey("ProductInOutletId");
+                        .HasForeignKey("ProductsId");
 
                     b.Navigation("Orders");
 
-                    b.Navigation("ProductInOutlet");
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("smartCooker.Models.UserAddress", b =>

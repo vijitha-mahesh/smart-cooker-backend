@@ -19,7 +19,6 @@ namespace smartCooker.Repositories.Repository
         public ProductRepository(ApiDbContext context, IMapper mapper) 
         {
             _context = context;
-           // _mapper = mapper;
         }
 
         //public IEnumerable<Product> CustomerGetAllProducts(int outletId)
