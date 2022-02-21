@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using smartCooker.Data;
+using smartCooker.DTOs.Users;
 using smartCooker.Models;
 using System.Threading.Tasks;
 
@@ -29,10 +30,25 @@ namespace smartCooker.Controllers
         {
             var item = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
 
-            if (item == null)
+            UserReadDTO data = new UserReadDTO
+            {
+                Id = item.Id,
+                NIC = item.NIC,
+                Role = item.Role,
+                Email = item.Email,
+                FirstName = item.FirstName,
+                LastName = item.LastName,
+                PhoneNumber = item.PhoneNumber,
+                ProfilePictureUrl=item.ProfilePictureUrl
+            };
+
+        
+            if (data == null)
                 return NotFound();
 
-            return Ok(item);
+          return Ok(data);
+
+       
         }
 
         // POST api/<UserInformationController>
